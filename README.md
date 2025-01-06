@@ -32,8 +32,6 @@ Code Analysis Presentation|25%
 Sharing is Caring Project|25%
 **Total**|**100%**
 ### ALL DUE DATES ARE IN CANVAS
-
-## Assignment Submission
 ### Steps to submit assignments via GitHub+Canvas
   1. Make a subfolder in *your* GitHub repository (not the class respository!) named after the assignment (i.e. {yourusername}/{course}/{assignment}, etc.)
   2. Commit all parts of your assignment (i.e. code+documentation file) into that subfolder
