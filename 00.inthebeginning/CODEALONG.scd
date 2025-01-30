@@ -41,7 +41,7 @@ REMINDERS FROM this week's README.md
 )
 
 
-//////// 5 ////////
+//////// 5 //////// RACHEL STOPS HERE
 // LET'S assign objects to variables in the server!
 // you can assign variables using letters a-z or with ~variableName
 // execute each step, incrementally
