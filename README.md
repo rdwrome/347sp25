@@ -12,7 +12,7 @@ LMSC-261 & MTEC-111 are prerequisites.
 - [modelling](https://en.wikibooks.org/wiki/Designing_Sound_in_SuperCollider)
 - code analysis
 - [mapping](https://archive.org/details/MappingAndVisualizationWithSuperCollider/page/n27/mode/2up)
-- sharing is caring
+- sharing is caring 
 
 ### Everyday Tools
 * [SuperCollider](https://supercollider.github.io/)
