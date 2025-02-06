@@ -41,7 +41,7 @@ REMINDERS FROM this week's README.md
 )
 
 
-//////// 5 //////// RACHEL STOPS HERE
+//////// 5 ////////
 // LET'S assign objects to variables in the server!
 // you can assign variables using letters a-z or with ~variableName
 // execute each step, incrementally
@@ -51,7 +51,7 @@ REMINDERS FROM this week's README.md
 (
 a={"I love SuperCollider".postln};
 
-~someVariable={"SuperCollider loves me".postln;};
+~rachel={"SuperCollider loves me".postln;};
 )
 
 // step 2a: run the first

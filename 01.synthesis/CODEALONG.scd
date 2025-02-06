@@ -13,10 +13,10 @@ but I'll explain more in the 03.patterns week.
 *digital audio 101*
 - transducers
 - A/D, D/A
-- amplitude
-- nyquist
 - sample rates
 - bit resolution/bit depth
+- amplitude
+- nyquist
 
 *rachel reminders*
 - You do need to boot the Audio Server with **Command|B**
@@ -36,8 +36,8 @@ but I'll explain more in the 03.patterns week.
 
 (
 x={
-	//arg freq=220; /* PIRATE vs PIPE NOTATION a la rachelle */
-	| freq=220 |
+	arg freq=166; /* PIRATE vs PIPE NOTATION a la rachelle */
+	// | freq=220 |
 	SinOsc.ar(freq:freq);
 }.play; // .play will play it
 )
@@ -45,7 +45,7 @@ x={
 // now you can run each of these lines to change it!
 x.set(\freq,220);
 
-x.set(\freq,44.midicps); // .midicps converts midi note to frequency (cycles per second)
+x.set(\freq,49.midicps); // .midicps converts midi note to frequency (cycles per second)
 
 x.free; // we can stop the synth running this line
 
@@ -67,7 +67,7 @@ Server>Kill All Servers > KILLS ALL SERVERS (apocalypse)
 - AR = sends 44.1k values per second; KR = sends 7,350 values per second (1/6th as many as ar. Just saves CPU this way!...like difference between VCO and LFO modules in a modular synth).
 - Let's get out of mono with Pan2:*/
 {Pan2.ar(SinOsc.ar(440))}.play;
-{Pan2.ar(SinOsc.ar(440), SinOsc.kr(4), SinOsc.kr(440))}.play // demo of .ar vs kr
+{Pan2.ar(SinOsc.ar(440), SinOsc.kr(4), SinOsc.ar(440))}.play // demo of .ar vs kr
 
 s.scope; // time domain
 
