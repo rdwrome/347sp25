@@ -160,7 +160,7 @@ Env.perc(0.05, 1, 1, -4).test.plot;
 Env.asr(0.2, 0.5, 1, 1).test.plot;
 Env.adsr(0.2, 0.2, 0.5, 1, 1, 1).test.plot;
 Env.cutoff(1, 1).test(2).plot;
-Env.new([0, 1, 0.3, 0.8, 0], [2, 3, 1, 4],'sine').test.plot; //DIY shape
+Env.new([0, 0.5, 0.3, 1, 0], [2, 3, 1, 4],curve: [-5, 0, -5]).test.plot; //DIY shape
 
 // Done Actions:
 
@@ -181,7 +181,7 @@ Env.new([0, 1, 0.3, 0.8, 0], [2, 3, 1, 4],'sine').test.plot; //DIY shape
 
 (
 SynthDef("envSynth", {var env;
-	env = EnvGen.kr(Env.sine(1, 3), doneAction:2);
+	env = EnvGen.kr(Env.linen(1, 2, 3, 0.6).test.plot, doneAction:0);
 	Out.ar(0, SinOsc.ar(200))})
 .add;
 )
@@ -193,12 +193,15 @@ tuning systems: https://www.kylegann.com/tuning.html
 
 Tuning.directory
 
-t = Tuning.harrison;
+t = Tuning.et53;
 t.semitones;
 t.ratios.collect(_.round(0.001));
 
-Pbind(\scale, Scale.minor(t), \degree, Pxrand((-15..3), inf), \dur, 0.25).play; // -15..3 notation explanation
-
+(
+g = Pbind(\scale, Scale.chromatic(t), \degree, Pgauss(0, 53, inf), \dur, 0.25).play;
+)
+g.stop;
+g.play;
 /*
 Routines & Tasks:
   - Pattern-less passing of messages to streams
