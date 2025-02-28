@@ -7,12 +7,12 @@
 
 // ~someBuffer=Buffer.read(s,<filename>) will read the file into the buffer ~someBuffer
 // on server "s"
-~buffer=Buffer.read(s,thisProcess.nowExecutingPath.dirname++"/kalimba.wav");
+~kalimba=Buffer.read(s,thisProcess.nowExecutingPath.dirname++"/kalimba.wav");
 
 // play the buffer
-~buffer.play;
+~kalimba.play;
 // plot the buffer
-~buffer.plot;
+~kalimba.plot;
 
 
 //////// b ////////
@@ -23,8 +23,8 @@
 	var snd; // define a variable to hold our sound
 	snd=PlayBuf.ar( // PlayBuf will play a sound in a buffer
 		numChannels:2, // we are dealing with stereo samples, so 2 channels
-		bufnum:~buffer, // the buffer
-		/* mess with rate: -0.2, */
+		bufnum:~kalimba, // the buffer
+		rate: -0.2,
 		loop:1,
 	);
 	Out.ar(0,snd); // send to Out UGen to channel 0 (default speakers)
@@ -35,16 +35,16 @@
 //////// c ////////
 // lets record into a buffer
 // define a new buffer that is 3 seconds long
-~buffer=Buffer.alloc(s,s.sampleRate*3,2);
+~me=Buffer.alloc(s,s.sampleRate*3,2);
 // then define a function to record into that buffer
 (
 {
-	RecordBuf.ar(SoundIn.ar([0])!2, ~buffer, loop:0, doneAction:2)
+	RecordBuf.ar(SoundIn.ar([0])!2, ~me, loop:0, doneAction:2)
 }.play; // .play will play this synth that records from the input audio
 )
 // lets see if it worked!
-~buffer.play;
-~buffer.plot;
+~me.play;
+~me.plot;
 // TRY! try recording and plotting/playing your recording
 
 
@@ -54,10 +54,10 @@
 // first we will define what is called a "SynthDef", a synth definition
 // SynthDef(<name>,<function>).add
 (
-SynthDef("musicbox", {
+SynthDef("musicboxa", {
 	// buffers have an index, and the buffer index will be supplied later using
 
-	arg bufnum = 0;
+	|bufnum = 0|
 	var snd;
 
 	snd=PlayBuf.ar(
@@ -74,15 +74,14 @@ SynthDef("musicbox", {
 
 //////// e  ////////
 // now let's play our defined synth using the "Synth" function
-// we can then create a synth that plays the sound!
-~syn=Synth("musicbox",[\bufnum,~buffer]);
+// we can then create a synth that plays a sound!
+~syn=Synth("musicboxa",[\bufnum,~kalimba]);
 ~syn.free; // will stop playing
-
 
 //////// f ////////
 // now lets create a synthdef with some modulation
 (
-SynthDef("musicbox", {
+SynthDef("musicboxb", {
 
 	arg bufnum = 0;
 
@@ -107,9 +106,9 @@ SynthDef("musicbox", {
 }).add; // .add will add it to our server to be used anytime we want!
 )
 
-~buffer=Buffer.read(s,thisProcess.nowExecutingPath.dirname++"/musicbox.wav");
+~box=Buffer.read(s,thisProcess.nowExecutingPath.dirname++"/musicbox.wav");
 
-x=Synth("musicbox", [\bufnum, ~buffer]); // will start playing
+x=Synth("musicboxb", [\bufnum, ~box]); // will start playing
 
 // TRY! try putting the modulation you created into this synthdef and playing
 
@@ -121,7 +120,7 @@ x=Synth("musicbox", [\bufnum, ~buffer]); // will start playing
 // delays: CombC, DelayC
 // distortion: .tanh, .softclip, .distort
 (
-SynthDef("musicbox", {
+SynthDef("musicboxc", {
 	// buffers have an index, and the buffer index will be supplied later using
 	// an argument, "arg":
 	arg bufnum = 0;
@@ -135,7 +134,7 @@ SynthDef("musicbox", {
 		rate:BufRateScale.kr(bufnum) // BufRateScale will calculate the
 	);                               // difference between the server sampling
 
-	snd = Pan2.ar(snd,LFNoise2.kr(1)); // pans randomly left and right
+	snd = Pan2.ar(snd,BrownNoise.kr(1)); // pans randomly left and right
 
 	snd = RLPF.ar(snd, MouseX.kr(10,20000,1),0.5); // effects controlled by mouse!
 
@@ -147,16 +146,12 @@ SynthDef("musicbox", {
 }).add; // .add will add it to our server to be used anytime we want!
 )
 
-~buffer=Buffer.read(s,thisProcess.nowExecutingPath.dirname++"/musicbox.wav");
-
-x=Synth("musicbox", [\bufnum, ~buffer]); // will start playing
+x=Synth("musicboxc", [\bufnum, ~box]); // will start playing
 
 // TRY! change up the effects, the filters, the distortion, the modulation
 
 s.record(numChannels:2);
 s.stopRecording;
-
-Duty
 
 ////////////////
 // __   __  _______  _______
@@ -174,6 +169,7 @@ Duty
 // before running this you must first save `Ube.sc` to the extensions directory.
 // open `Ube.sc` in SuperCollider.
 // now save it by doing `File -> Save As Extension...` and type `Ube.sc`.
+// THEN GO TO LANGUAGE>RECOMPILE CLASS LIBRARY! Then reboot!
 
 // to run this code, but a cursor anywhere in the code block (a code block is enclosed in parentheses)
 // and hit <Ctrl>+Enter
