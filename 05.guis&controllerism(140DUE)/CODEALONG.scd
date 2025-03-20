@@ -9,8 +9,8 @@ https://doc.sccode.org/Guides/GUI-Introduction.html
 
 // GOOEY (take a look at all the UGens
 
-w = Window.new("GUI Introduction", Rect(200,200,255,100));
-b = Button.new(w,Rect(10,0,80,30)).states_([["Hide"],["Show"]]);
+w = Window.new("rachel doesn't remeber cartesian stuff", Rect(400,400,255,100));
+b = Button.new(w,Rect(10,0,80,30)).states_([["yes"],["no"]]);
 l = Slider.new(w,Rect(95,0,150,30));
 c = CompositeView.new(w,Rect(20,35,100,60));
 StaticText.new(c,Rect(0,0,80,30)).string_("Hello");
@@ -24,9 +24,9 @@ w.front;
 (
 w = Window("GUI Introduction").background_(Color.rand).front;
 b = Button(w, Rect(10,10,100,30)).states_([
-    ["One",Color.rand,Color.rand],
-    ["Two",Color.rand,Color.rand],
-    ["Three",Color.rand,Color.rand]
+    ["a",Color.rand,Color.rand],
+    ["b",Color.rand,Color.rand],
+    ["c",Color.rand,Color.rand]
 ]);
 l = ListView.new(w, Rect(10,50,200,100))
     .items_(["One","Two","Three"])
