@@ -2,6 +2,41 @@
 //a plug for pd
 // BOOT
 
+(
+/*
+
+RM octaver
+
+inSignal is RingModulated by a sinusoidal tone with half frequency.
+The resulting spectrum is given by all the components of inSignal with
+half freqs.
+This means that the new spectrum is a one 8ve below version of the input signal's one,
+with only odd partials.
+As a consequence, if inSignal is added again, even partials are
+recovered.
+
+See:
+Miller Puckette, The Theory and Technique of Electronic Music, p. 126
+http://crca.ucsd.edu/~msp/techniques/latest/book.pdf
+http://crca.ucsd.edu/~msp/techniques/latest/book-html/node77.html#sect5.ringmod
+
+andreavalle
+
+*/
+
+s = Server.local.waitForBoot({
+	SynthDef.new(\RmOctaver, { var in, out = 0, freq, hasFreq ;
+		in = SoundIn.ar(0) ;
+		# freq, hasFreq = Pitch.kr(in) ;
+		Out.ar(out, SinOsc.ar(freq: freq*0.5)*in+in);
+	}).add ;
+})
+)
+
+
+Synth.new(\RmOctaver) ;
+
+
 // recirculating schroeder reverb with Ndef and DELAYC
 b = Buffer.read(s,thisProcess.nowExecutingPath.dirname++"/windchimes.wav");
 
@@ -10,9 +45,9 @@ Ndef(\verb, {
 	var input, output, delrd, sig, deltimes;
 
 	// Choose which sort of input you want by (un)commenting these lines:
-	input = Pan2.ar(PlayBuf.ar(1, b, loop: 1), -0.5); // buffer playback, panned halfway left
+	//input = Pan2.ar(PlayBuf.ar(1, b, loop: 1), -0.5); // buffer playback, panned halfway left
 	//input = SoundIn.ar([0,1]); // TAKE CARE of feedback - use headphones
-	//input = Dust2.ar([0.1, 0.01]); // Occasional clicks
+	input = Dust2.ar([0.1, 0.01]); // Occasional clicks
 
 	// Read our 4-channel delayed signals back from the feedback loop
 	delrd = LocalIn.ar(4);
@@ -652,3 +687,30 @@ w.set(\period, 0.3);
 
 // To stop:
 w.free;
+
+// shepard tones
+// alberto de campo
+(
+var ampTable, freqTable, b1, b2;
+
+ampTable = Signal.hanningWindow(1024).squared;
+freqTable = Signal.newClear(1024).waveFill({ arg i; 0.5 ** i * 20000 }, 0, 10);
+
+b1 = Buffer.loadCollection(s, freqTable);
+b2 = Buffer.loadCollection(s, ampTable);
+
+{
+	var freqs, amps, phasor, ratescale, rate, phases;
+	ratescale = 1024 / 44100 / 10;
+	rate = 0.1;	// once per 10 sec
+	phasor = Phasor.ar(0, rate * ratescale, 0, 1024);
+	phases = (0..9) * 0.1 * 1024 + phasor;
+
+	freqs = BufRd.ar(1, b1.bufnum, phases);
+	amps = BufRd.ar(1, b2.bufnum, phases);
+
+	Mix.ar(SinOsc.ar(freqs) * amps) * 0.1;
+}.play;
+
+)
+

@@ -5,7 +5,7 @@ LMSC-261 & MTEC-111 are prerequisites.
 ## Topics
 - in the beginning/intro to supercollider (object-oriented programming language like python, written in c++)
 - synthesis
-- effects
+- simple effects
 - patterns
 - playback
 - guis & controllerism 
